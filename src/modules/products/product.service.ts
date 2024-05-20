@@ -8,6 +8,13 @@ const createProduct =  async(proLoad: Products) => {
     return result;
 };
 
+const getAllProduct =  async() => {
+    const result = await Product.find();
+
+    return result;
+};
+
 export const ProductService = {
-    createProduct
+    createProduct,
+    getAllProduct
 }
