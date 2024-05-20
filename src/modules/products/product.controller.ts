@@ -1,3 +1,4 @@
+import { Product } from './product.model';
 import { Request, Response } from "express"
 import { ProductService } from "./product.service"
 
@@ -34,7 +35,29 @@ const getAllProduct = async(req: Request, res: Response) =>{
     }
 }
 
+const getProductId = async(req: Request, res: Response) => {
+    try{
+
+        const productId = req.params.productId;
+
+        const result = await ProductService.getProductId(productId);
+
+        res.status(200).json({
+            success: true,
+            message: "Products fetched successfully!",
+            data : result
+        })
+    }catch(err: any){
+        res.status(500).json({
+            success: false,
+            message: "Could Not fetched products!" ,
+            error: err
+        })
+    }
+}
+
 export const ProductController = {
     createProduct,
-    getAllProduct
+    getAllProduct,
+    getProductId
 }
