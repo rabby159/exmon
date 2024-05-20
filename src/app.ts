@@ -1,8 +1,15 @@
-import express, { Request, Response } from 'express';
-const app = express()
+import express, { Request, Response } from "express";
+import { ProductRouter } from "./modules/products/product.route";
+const app = express();
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!')
-})
+//parser
+app.use(express.json());
+
+//middleware
+app.use("/api/products", ProductRouter);
+
+app.get("/", (req: Request, res: Response) => {
+  res.send("Hello!");
+});
 
 export default app;
