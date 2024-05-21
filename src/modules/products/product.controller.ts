@@ -107,11 +107,16 @@ const deleteProductById = async(req: Request, res: Response) => {
 const getProductInSearch = async(req: Request, res: Response) => {
     try{
 
-        const  { searchTerm } = req.params;
+        const { searchTerm } = req.query as { searchTerm: string };
 
-        const searchReg = new RegExp(searchTerm as string)
+        if (!searchTerm) {
+            return res.status(400).json({
+              success: false,
+              message: "Search term is required"
+            });
+          }
 
-        const result = await ProductService.getProductInSearch(searchReg);
+        const result = await ProductService.getProductInSearch(searchTerm);
 
         res.status(200).json({
             success: true,
