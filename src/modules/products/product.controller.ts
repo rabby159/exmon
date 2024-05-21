@@ -1,4 +1,3 @@
-import { error } from 'console';
 import { NextFunction, Request, Response } from "express"
 import { ProductService } from "./product.service"
 import ProductValidationSchema from './product.validation';
@@ -42,14 +41,8 @@ const createProduct = async(req: Request, res: Response) => {
 const getAllProduct = async(req: Request, res: Response) =>{
     try{
 
-        const { searchTerm } = req.query as { searchTerm: string };
 
-        if (!searchTerm) {
-            return res.status(400).json({
-              success: false,
-              message: "Search term is required"
-            });
-          }
+        const { searchTerm } = req.query as { searchTerm: string };
 
         const result = await ProductService.getAllProduct(searchTerm);
 

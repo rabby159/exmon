@@ -48,12 +48,6 @@ const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 const getAllOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email } = req.query;
-        if (!email) {
-            return res.status(400).json({
-                success: false,
-                message: "Search email is required",
-            });
-        }
         const result = yield order_service_1.OrderService.getAllOrder(email);
         res.status(200).json({
             success: true,

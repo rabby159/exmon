@@ -37,13 +37,6 @@ const getAllOrder = async (req: Request, res: Response) => {
   try {
     const { email } = req.query as { email: string };
 
-    if (!email) {
-      return res.status(400).json({
-        success: false,
-        message: "Search email is required",
-      });
-    }
-
     const result = await OrderService.getAllOrder(email);
 
     res.status(200).json({
