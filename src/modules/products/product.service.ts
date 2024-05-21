@@ -47,5 +47,4 @@ export const ProductService = {
   getProductId,
   updateProductById,
   deleteProductById,
-  // getProductInSearch,
 };
