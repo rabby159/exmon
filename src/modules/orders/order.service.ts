@@ -9,8 +9,13 @@ const createOrder = async (orLoad: Orders) => {
   };
 
 
-
+  const getAllOrder = async () => {
+    const result = await Order.find();
+  
+    return result;
+  };
 
 export const OrderService = {
-    createOrder
+    createOrder,
+    getAllOrder
 }

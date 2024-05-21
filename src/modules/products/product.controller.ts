@@ -35,7 +35,7 @@ const getAllProduct = async(req: Request, res: Response) =>{
             error: err
         })
     }
-}
+};
 
 //get all product by there id
 const getProductId = async(req: Request, res: Response) => {
