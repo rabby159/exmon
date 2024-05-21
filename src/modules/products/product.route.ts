@@ -1,5 +1,4 @@
 import express, { Request, Response } from 'express'
-import { Product } from './product.model';
 import { ProductController } from './product.controller';
 
 const router = express.Router();
@@ -7,5 +6,7 @@ const router = express.Router();
 router.post('/', ProductController.createProduct);
 router.get('/', ProductController.getAllProduct);
 router.get('/:productId', ProductController.getProductId);
+router.put('/:productId', ProductController.updateProductById);
+router.delete('/:productId', ProductController.deleteProductById);
 
 export const ProductRouter = router;

@@ -2,6 +2,7 @@ import { Product } from './product.model';
 import { Request, Response } from "express"
 import { ProductService } from "./product.service"
 
+//create product
 const createProduct = async(req: Request, res: Response) => {
 
     const ProductData = req.body;
@@ -16,6 +17,7 @@ const createProduct = async(req: Request, res: Response) => {
 
 };
 
+//get all product
 const getAllProduct = async(req: Request, res: Response) =>{
     try{
         const result = await ProductService.getAllProduct();
@@ -35,6 +37,7 @@ const getAllProduct = async(req: Request, res: Response) =>{
     }
 }
 
+//get all product via there id
 const getProductId = async(req: Request, res: Response) => {
     try{
 
@@ -54,10 +57,56 @@ const getProductId = async(req: Request, res: Response) => {
             error: err
         })
     }
-}
+};
+
+//update all product via there id
+const updateProductById = async(req: Request, res: Response) => {
+    try{
+
+        const  { productId } = req.params;
+
+        const result = await ProductService.updateProductById(productId);
+
+        res.status(200).json({
+            success: true,
+            message: "Products Update successfully!",
+            data : result
+        })
+    }catch(err: any){
+        res.status(500).json({
+            success: false,
+            message: "Could Not fetched products!" ,
+            error: err
+        })
+    }
+};
+
+//delete all product via there id
+const deleteProductById = async(req: Request, res: Response) => {
+    try{
+
+        const  { productId } = req.params;
+
+        const result = await ProductService.deleteProductById(productId);
+
+        res.status(200).json({
+            success: true,
+            message: "Products Delete successfully!",
+            data : result
+        })
+    }catch(err: any){
+        res.status(500).json({
+            success: false,
+            message: "Could Not fetched products!" ,
+            error: err
+        })
+    }
+};
 
 export const ProductController = {
     createProduct,
     getAllProduct,
-    getProductId
+    getProductId,
+    updateProductById,
+    deleteProductById
 }

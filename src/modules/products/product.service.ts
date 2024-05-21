@@ -14,8 +14,20 @@ const getAllProduct =  async() => {
     return result;
 };
 
-const getProductId =  async(proLoad: Products) => {
-    const result = await Product.findById(proLoad);
+const getProductId =  async(id: string) => {
+    const result = await Product.findById(id);
+
+    return result;
+};
+
+const updateProductById =  async(id: string) => {
+    const result = await Product.findByIdAndUpdate(id);
+
+    return result;
+};
+
+const deleteProductById =  async(id: string) => {
+    const result = await Product.findByIdAndDelete(id);
 
     return result;
 };
@@ -23,5 +35,7 @@ const getProductId =  async(proLoad: Products) => {
 export const ProductService = {
     createProduct,
     getAllProduct,
-    getProductId
+    getProductId,
+    updateProductById,
+    deleteProductById
 }
