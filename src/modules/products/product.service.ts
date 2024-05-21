@@ -37,10 +37,10 @@ const getProductInSearch = async (searchTerm: string) => {
 
   const result = await Product.find({
     $or: [
-      { name: searchReg },
-      { description: searchReg },
-      { tags: searchReg },
-      { category: searchReg }
+      { name: { $regex: searchReg } },
+      { description: { $regex: searchReg } },
+      { tags: { $regex: searchReg } },
+      { category: { $regex: searchReg } }
     ]
   });
 
