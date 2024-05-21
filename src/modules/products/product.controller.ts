@@ -1,4 +1,4 @@
-import { Product } from './product.model';
+import { error } from 'console';
 import { Request, Response } from "express"
 import { ProductService } from "./product.service"
 import ProductValidationSchema from './product.validation';
@@ -8,8 +8,6 @@ import { ZodError } from 'zod';
 const createProduct = async(req: Request, res: Response) => {
     
     try{
-        // const {Product : ProductData} = req.body;
-    //validation using zod
 
     const zodParsedData = ProductValidationSchema.parse(req.body);
     
@@ -33,7 +31,7 @@ const createProduct = async(req: Request, res: Response) => {
             res.status(500).json({
                 success: false,
                 message: 'Something went wrong',
-                // error: error.message
+                error: error
               });
           }
     }
@@ -61,7 +59,7 @@ const getAllProduct = async(req: Request, res: Response) =>{
             data : result
         })
 
-    }catch(err: any){
+    }catch(err){
         res.status(500).json({
             success: false,
             message: "Could Not fetched products!" ,
@@ -83,7 +81,7 @@ const getProductId = async(req: Request, res: Response) => {
             message: "Products fetched successfully!",
             data : result
         })
-    }catch(err: any){
+    }catch(err){
         res.status(500).json({
             success: false,
             message: "Could Not fetched products!" ,
@@ -105,7 +103,7 @@ const updateProductById = async(req: Request, res: Response) => {
             message: "Products Update successfully!",
             data : result
         })
-    }catch(err: any){
+    }catch(err){
         res.status(500).json({
             success: false,
             message: "Could Not fetched products!" ,
@@ -127,7 +125,7 @@ const deleteProductById = async(req: Request, res: Response) => {
             message: "Products Delete successfully!",
             data : result
         })
-    }catch(err: any){
+    }catch(err){
         res.status(500).json({
             success: false,
             message: "Could Not fetched products!" ,
