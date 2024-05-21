@@ -37,7 +37,7 @@ const getAllProduct = async(req: Request, res: Response) =>{
     }
 }
 
-//get all product via there id
+//get all product by there id
 const getProductId = async(req: Request, res: Response) => {
     try{
 
@@ -59,7 +59,7 @@ const getProductId = async(req: Request, res: Response) => {
     }
 };
 
-//update all product via there id
+//update all product by there id
 const updateProductById = async(req: Request, res: Response) => {
     try{
 
@@ -81,7 +81,7 @@ const updateProductById = async(req: Request, res: Response) => {
     }
 };
 
-//delete all product via there id
+//delete all product by there id
 const deleteProductById = async(req: Request, res: Response) => {
     try{
 
@@ -103,10 +103,35 @@ const deleteProductById = async(req: Request, res: Response) => {
     }
 };
 
+//delete all product by there id
+const getProductInSearch = async(req: Request, res: Response) => {
+    try{
+
+        const  { searchTerm } = req.params;
+
+        const searchReg = new RegExp(searchTerm as string)
+
+        const result = await ProductService.getProductInSearch(searchReg);
+
+        res.status(200).json({
+            success: true,
+            message: `Products matching search term '${searchTerm}' fetched successfully!`,
+            data : result
+        })
+    }catch(err: any){
+        res.status(500).json({
+            success: false,
+            message: "Could Not fetched products!" ,
+            error: err
+        })
+    }
+};
+
 export const ProductController = {
     createProduct,
     getAllProduct,
     getProductId,
     updateProductById,
-    deleteProductById
+    deleteProductById,
+    getProductInSearch
 }

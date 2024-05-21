@@ -32,10 +32,24 @@ const deleteProductById =  async(id: string) => {
     return result;
 };
 
+const getProductInSearch =  async(searchReg: any) => {
+    const result = await Product.find({
+        $or: [
+            {name : searchReg},
+            {description: searchReg},
+            {tags: searchReg},
+            {category: searchReg}
+        ]
+    });
+
+    return result;
+};
+
 export const ProductService = {
     createProduct,
     getAllProduct,
     getProductId,
     updateProductById,
-    deleteProductById
+    deleteProductById,
+    getProductInSearch
 }
