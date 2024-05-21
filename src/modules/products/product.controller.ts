@@ -1,19 +1,42 @@
 import { Product } from './product.model';
 import { Request, Response } from "express"
 import { ProductService } from "./product.service"
+import ProductValidationSchema from './product.validation';
+import { ZodError } from 'zod';
 
 //create product
 const createProduct = async(req: Request, res: Response) => {
-
-    const ProductData = req.body;
-
-    const result = await ProductService.createProduct(ProductData);
     
+    try{
+        // const {Product : ProductData} = req.body;
+    //validation using zod
+
+    const zodParsedData = ProductValidationSchema.parse(req.body);
+    
+
+    const result = await ProductService.createProduct(zodParsedData);
+
     res.json({
         success: true,
         message: "Product created successfully!",
         data : result
-    })
+    });
+
+    }catch(error){
+        if (error instanceof ZodError) {
+            res.status(400).json({
+              success: false,
+              message: 'Validation error',
+              error: error.issues
+            });
+          }else{
+            res.status(500).json({
+                success: false,
+                message: 'Something went wrong',
+                error: error.message
+              });
+          }
+    }
 
 };
 
