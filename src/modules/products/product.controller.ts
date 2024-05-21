@@ -1,5 +1,5 @@
 import { error } from 'console';
-import { Request, Response } from "express"
+import { NextFunction, Request, Response } from "express"
 import { ProductService } from "./product.service"
 import ProductValidationSchema from './product.validation';
 import { ZodError } from 'zod';
@@ -134,10 +134,50 @@ const deleteProductById = async(req: Request, res: Response) => {
     }
 };
 
+//error handling 
+const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+    if (err instanceof ZodError) {
+        return res.status(400).json({
+            success: false,
+            message: 'Validation error',
+            error: err.issues
+        });
+    }
+
+    switch (err.message) {
+        case 'InsufficientQuantity':
+            return res.status(400).json({
+                success: false,
+                message: 'Insufficient quantity available in inventory'
+            });
+        case 'OrderNotFound':
+            return res.status(404).json({
+                success: false,
+                message: 'Order not found'
+            });
+        default:
+            return res.status(500).json({
+                success: false,
+                message: 'Something went wrong',
+                error: err.message
+            });
+    }
+};
+
+const routeNotFound = (req: Request, res: Response) => {
+    res.status(404).json({
+        success: false,
+        message: 'Route not found'
+    });
+};
+
 export const ProductController = {
     createProduct,
     getAllProduct,
     getProductId,
     updateProductById,
-    deleteProductById
+    deleteProductById,
+    errorHandler,
+    routeNotFound
+
 }

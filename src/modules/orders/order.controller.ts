@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { OrderService } from "./order.service";
 import { ZodError } from "zod";
 import OrdersValidationSchema from "./order.validation";
@@ -60,7 +60,46 @@ const getAllOrder = async (req: Request, res: Response) => {
   }
 };
 
+//error handling 
+const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+    if (err instanceof ZodError) {
+        return res.status(400).json({
+            success: false,
+            message: 'Validation error',
+            error: err.issues
+        });
+    }
+
+    switch (err.message) {
+        case 'InsufficientQuantity':
+            return res.status(400).json({
+                success: false,
+                message: 'Insufficient quantity available in inventory'
+            });
+        case 'OrderNotFound':
+            return res.status(404).json({
+                success: false,
+                message: 'Order not found'
+            });
+        default:
+            return res.status(500).json({
+                success: false,
+                message: 'Something went wrong',
+                error: err.message
+            });
+    }
+};
+
+const routeNotFound = (req: Request, res: Response) => {
+    res.status(404).json({
+        success: false,
+        message: 'Route not found'
+    });
+};
+
 export const OrderController = {
   createOrder,
   getAllOrder,
+  errorHandler,
+  routeNotFound
 };
