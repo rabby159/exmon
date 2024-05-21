@@ -69,7 +69,43 @@ const getAllOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         });
     }
 });
+//error handling 
+const errorHandler = (err, req, res, next) => {
+    if (err instanceof zod_1.ZodError) {
+        return res.status(400).json({
+            success: false,
+            message: 'Validation error',
+            error: err.issues
+        });
+    }
+    switch (err.message) {
+        case 'InsufficientQuantity':
+            return res.status(400).json({
+                success: false,
+                message: 'Insufficient quantity available in inventory'
+            });
+        case 'OrderNotFound':
+            return res.status(404).json({
+                success: false,
+                message: 'Order not found'
+            });
+        default:
+            return res.status(500).json({
+                success: false,
+                message: 'Something went wrong',
+                error: err.message
+            });
+    }
+};
+const routeNotFound = (req, res) => {
+    res.status(404).json({
+        success: false,
+        message: 'Route not found'
+    });
+};
 exports.OrderController = {
     createOrder,
     getAllOrder,
+    errorHandler,
+    routeNotFound
 };
