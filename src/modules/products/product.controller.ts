@@ -20,7 +20,17 @@ const createProduct = async(req: Request, res: Response) => {
 //get all product
 const getAllProduct = async(req: Request, res: Response) =>{
     try{
-        const result = await ProductService.getAllProduct();
+
+        const { searchTerm } = req.query as { searchTerm: string };
+
+        if (!searchTerm) {
+            return res.status(400).json({
+              success: false,
+              message: "Search term is required"
+            });
+          }
+
+        const result = await ProductService.getAllProduct(searchTerm);
 
         res.status(200).json({
             success: true,
@@ -103,40 +113,10 @@ const deleteProductById = async(req: Request, res: Response) => {
     }
 };
 
-//delete all product by there id
-const getProductInSearch = async(req: Request, res: Response) => {
-    try{
-
-        const { searchTerm } = req.query as { searchTerm: string };
-
-        if (!searchTerm) {
-            return res.status(400).json({
-              success: false,
-              message: "Search term is required"
-            });
-          }
-
-        const result = await ProductService.getProductInSearch(searchTerm);
-
-        res.status(200).json({
-            success: true,
-            message: `Products matching search term '${searchTerm}' fetched successfully!`,
-            data : result
-        })
-    }catch(err: any){
-        res.status(500).json({
-            success: false,
-            message: "Could Not fetched products!" ,
-            error: err
-        })
-    }
-};
-
 export const ProductController = {
     createProduct,
     getAllProduct,
     getProductId,
     updateProductById,
-    deleteProductById,
-    getProductInSearch
+    deleteProductById
 }

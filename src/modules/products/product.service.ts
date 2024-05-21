@@ -7,8 +7,18 @@ const createProduct = async (proLoad: Products) => {
   return result;
 };
 
-const getAllProduct = async () => {
-  const result = await Product.find();
+const getAllProduct = async (searchTerm: string) => {
+  
+  const searchReg = new RegExp(searchTerm, 'i');
+
+  const result = await Product.find({
+    $or: [
+      { name: { $regex: searchReg } },
+      { description: { $regex: searchReg } },
+      { tags: { $regex: searchReg } },
+      { category: { $regex: searchReg } }
+    ]
+  });
 
   return result;
 };
@@ -31,27 +41,11 @@ const deleteProductById = async (id: string) => {
   return result;
 };
 
-const getProductInSearch = async (searchTerm: string) => {
-
-  const searchReg = new RegExp(searchTerm, 'i');
-
-  const result = await Product.find({
-    $or: [
-      { name: { $regex: searchReg } },
-      { description: { $regex: searchReg } },
-      { tags: { $regex: searchReg } },
-      { category: { $regex: searchReg } }
-    ]
-  });
-
-  return result;
-};
-
 export const ProductService = {
   createProduct,
   getAllProduct,
   getProductId,
   updateProductById,
   deleteProductById,
-  getProductInSearch,
+  // getProductInSearch,
 };
